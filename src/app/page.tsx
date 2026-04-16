@@ -3,6 +3,9 @@ import UrlForm from "@/components/UrlForm";
 import RecentCreationsList from "@/components/RecentCreationsList";
 import { Separator } from "@/components/ui/separator";
 import { buttonVariants } from "@/components/ui/button";
+
+// Never statically prerender – requires DB access at runtime
+export const dynamic = "force-dynamic";
 import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import type { CreationSummary } from "@/types";
