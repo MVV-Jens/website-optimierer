@@ -1,0 +1,26 @@
+app = "website-optimierer"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 50
+    soft_limit = 30
+
+[[mounts]]
+  source = "data"
+  destination = "/data"
+
+[env]
+  DATABASE_URL = "file:/data/db.sqlite"
+  STORAGE_PATH = "/data/storage"
+  PORT = "3000"

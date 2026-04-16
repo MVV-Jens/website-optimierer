@@ -1,13 +1,42 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
+}
+
+model Creation {
+  id                String   @id @default(uuid())
+  url               String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  status            Status   @default(ANALYZING)
+  optimizationFocus String?
+  depth             String?
+  analysisJson      String?
+  analysisMarkdown  String?
+  styleLockJson     String?
+  redesignHtml      String?
+  redesignCss       String?
+  redesignZipPath   String?
+  redesignChangesJson String?
+  errorMessage      String?
+  assets            Asset[]
+}
+
+model Asset {
+  id         String   @id @default(uuid())
+  creationId String
+  type       String
+  filePath   String
+  createdAt  DateTime @default(now())
+  creation   Creation @relation(fields: [creationId], references: [id], onDelete: Cascade)
+}
+
+enum Status {
+  ANALYZING
+  DESIGNING
+  DONE
+  ERROR
 }
