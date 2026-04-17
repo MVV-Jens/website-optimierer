@@ -19,7 +19,7 @@ else
 fi
 
 echo "→ Starte Datenbank-Migrationen…"
-node node_modules/prisma/build/index.js migrate deploy
+node migrate.mjs
 
 echo "→ Starte Anwendung auf ${HOSTNAME}:${PORT}…"
 exec node server.js

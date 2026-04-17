@@ -36,17 +36,16 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
-# Copy Prisma schema + migrations + engines
+# Copy Prisma schema + migrations + ALL @prisma/* packages + engines
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
-COPY --from=builder /app/node_modules/@prisma/adapter-libsql ./node_modules/@prisma/adapter-libsql
-COPY --from=builder /app/node_modules/@prisma/engines ./node_modules/@prisma/engines
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/@libsql ./node_modules/@libsql
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
-# Entrypoint script
+# Entrypoint + migration script
 COPY docker-entrypoint.sh ./
+COPY migrate.mjs ./
 RUN chmod +x docker-entrypoint.sh
 
 # Data directory (override via volume: /data)
